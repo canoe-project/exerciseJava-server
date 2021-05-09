@@ -2,26 +2,21 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 public class Main {
-    ServerSocket serverSocket = null;
-    ArrayList<Client> clients = new ArrayList<Client>();
-
-    public static void main(String[] args) {
-        Main server = new Main();
+    static ArrayList<Client> clients = new ArrayList<Client>();
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = null;
         try{
-            server.serverSocket = new ServerSocket(55555);
+            serverSocket = new ServerSocket(55555);
             while(true){
-
-                Socket socket = server.serverSocket.accept();
+                Socket socket = serverSocket.accept();
                 Client  c = new Client(socket);
-                server.clients.add(c);
+                clients.add(c);
                 c.start();
             }
-
         }catch (SocketException e){
-
+            clients.clear();
+            serverSocket.close();
         }
-        catch (IOException e){
 
-        }
     }
 }
